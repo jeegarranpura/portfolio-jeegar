@@ -13,11 +13,88 @@ import ivogue from "../assets/project/ivogue.png";
 import backgrondImage from "../assets/bg.jpg";
 import developerGif from "../assets/Developer.gif";
 import MyLottieComponent from "./MyLottieComponent";
+import { sendMail } from "@/utils/mailUtils";
 
 const MainComponent = () => {
   const [isProjectDetails, setProjectDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [inputVal, setInputVal] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
   const closePopup = () => {
     setProjectDetails(null);
+  };
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setInputVal((prevVal) => {
+      return { ...prevVal, [name]: value };
+    });
+    console.log(inputVal);
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const onSendMail = async () => {
+    const lable = document.getElementById("txtlbl");
+    if (Object.values(inputVal).every((f) => f)) {
+      if (!validateEmail(inputVal.email)) {
+        if (lable) {
+          lable.style.color = "red";
+          lable.innerHTML = "Provide valid email";
+        }
+        setInputVal((val) => {
+          return { ...val, email: "" };
+        });
+        setTimeout(() => {
+          lable.innerHTML = "";
+        }, 3000);
+        return;
+      }
+      setLoading(true);
+      const data = await sendMail(inputVal);
+      if (data.success) {
+        setInputVal({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        setLoading(false);
+        if (lable) {
+          lable.style.color = "green";
+          lable.innerHTML = "Inquiry send successfully.";
+        }
+        setTimeout(() => {
+          lable.innerHTML = "";
+        }, 3000);
+      } else {
+        setLoading(false);
+        if (lable) {
+          lable.style.color = "red";
+          lable.innerHTML = "Something went wrong!";
+        }
+        setTimeout(() => {
+          lable.innerHTML = "";
+        }, 3000);
+      }
+      return data;
+    } else {
+      setLoading(false);
+      if (lable) {
+        lable.style.color = "red";
+        lable.innerHTML = "All Fields are require";
+      }
+      setTimeout(() => {
+        lable.innerHTML = "";
+      }, 3000);
+    }
   };
 
   const ProjectTag = ({ keys, data }) => {
@@ -698,7 +775,10 @@ const MainComponent = () => {
                       LinkedIn
                     </p>
                     <p className="font-bold">
-                      <a target="_blank" href="https://in.linkedin.com/in/jeegar-ranpura">
+                      <a
+                        target="_blank"
+                        href="https://in.linkedin.com/in/jeegar-ranpura"
+                      >
                         Jeegar Ranpura
                       </a>
                     </p>
@@ -734,7 +814,11 @@ const MainComponent = () => {
                     <input
                       className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                       placeholder="Full Name"
+                      required
                       type="text"
+                      name="name"
+                      value={inputVal["name"]}
+                      onChange={(e) => onInputChange(e)}
                     />
                   </div>
                   <div>
@@ -745,6 +829,10 @@ const MainComponent = () => {
                       className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                       placeholder="your@example.com"
                       type="email"
+                      required
+                      name="email"
+                      value={inputVal["email"]}
+                      onChange={(e) => onInputChange(e)}
                     />
                   </div>
                 </div>
@@ -756,6 +844,10 @@ const MainComponent = () => {
                     className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Inquiry about project"
                     type="text"
+                    required
+                    name="subject"
+                    value={inputVal["subject"]}
+                    onChange={(e) => onInputChange(e)}
                   />
                 </div>
                 <div>
@@ -766,11 +858,27 @@ const MainComponent = () => {
                     className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
                     placeholder="How can I help you?"
                     rows="5"
+                    required
+                    name="message"
+                    value={inputVal["message"]}
+                    onChange={(e) => onInputChange(e)}
                   ></textarea>
                 </div>
-                <button className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                <p id="txtlbl"></p>
+                <button
+                  className={`w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                  type="button"
+                  disabled={loading}
+                  onClick={() => {
+                    onSendMail();
+                  }}
+                >
                   Send Message
-                  <span className="material-symbols-outlined">send</span>
+                  <span
+                    className={`material-symbols-outlined ${loading ? "animate-spin" : ""}`}
+                  >
+                    {loading ? "progress_activity" : "send"}
+                  </span>
                 </button>
               </form>
             </div>
