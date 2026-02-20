@@ -750,7 +750,11 @@ const MainComponent = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-slate-500">Email</p>
-                    <p className="font-bold">jigar.ranpura99@gmail.com</p>
+                    <p className="font-bold">
+                      <a href="mailto:jigar.ranpura99@gmail.com">
+                        jigar.ranpura99@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
                 {/*  */}
