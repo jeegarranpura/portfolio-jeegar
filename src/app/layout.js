@@ -25,7 +25,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
         className={`${inter.variable} ${geistMono.variable} bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 selection:bg-primary/30 `}
       >

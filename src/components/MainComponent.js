@@ -19,9 +19,6 @@ const MainComponent = () => {
   const closePopup = () => {
     setProjectDetails(null);
   };
-  if (isProjectDetails) {
-    return <ProjectDetails data={isProjectDetails} closePopup={closePopup} />;
-  }
 
   const ProjectTag = ({ keys, data }) => {
     return (
@@ -33,12 +30,13 @@ const MainComponent = () => {
         <div className="h-48 overflow-hidden">
           <Image
             alt="SaaS Platform"
-            className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500`}
+            className={`w-full h-full object-fit group-hover:scale-110 transition-transform duration-500 p-3`}
             style={{
               backgroundImage: `url(${backgrondImage.src})`,
             }}
             data-alt="User interface of a task management app"
             src={data.image}
+            priority
           />
         </div>
         <div className="p-6">
@@ -365,9 +363,12 @@ const MainComponent = () => {
               <div className="absolute inset-0 bg-primary rounded-3xl rotate-6 group-hover:rotate-3 transition-transform duration-500"></div>
               <Image
                 alt="Professional Headshot"
-                className="relative rounded-3xl w-80 h-96 object-cover shadow-2xl transition-transform duration-500 group-hover:-translate-y-2"
+                className="relative rounded-3xl object-cover shadow-2xl transition-transform duration-500 group-hover:-translate-y-2"
                 data-alt="Professional portrait of a developer smiling"
                 src={ProfileImage}
+                width={400}
+                height={500}
+                priority
               />
               {/* <img
                 alt="Professional Headshot"
@@ -380,7 +381,10 @@ const MainComponent = () => {
         </div>
       </section>
       {/* <!-- About Me Section --> */}
-      <section className="py-24 bg-background-light dark:bg-slate-900/50" id="about">
+      <section
+        className="py-24 bg-background-light dark:bg-slate-900/50"
+        id="about"
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-20 items-center">
             <div className="w-full lg:w-1/2">
@@ -475,11 +479,11 @@ const MainComponent = () => {
                 <span className="text-primary font-bold text-sm tracking-widest uppercase">
                   2021 - Present
                 </span>
-                <h3 className="text-xl font-bold mt-2">z
+                <h3 className="text-xl font-bold mt-2">
                   Senior Full Stack Developer
                 </h3>
                 <p className="text-slate-500 font-medium mb-4">
-                  Aegis Software.
+                  Aegis Software
                 </p>
                 <ul className="list-disc list-outside pl-5 text-slate-600 dark:text-slate-400 space-y-3 text-sm leading-relaxed">
                   {experienceData.map((items) => {
@@ -523,7 +527,10 @@ const MainComponent = () => {
         </div>
       </section>
       {/* <!-- Projects Section --> */}
-      <section className="py-24 bg-background-light dark:bg-slate-900/50" id="projects">
+      <section
+        className="py-24 bg-background-light dark:bg-slate-900/50"
+        id="projects"
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-end mb-12">
             <div>
@@ -646,7 +653,10 @@ const MainComponent = () => {
         </div>
       </section>
       {/* <!-- Contact Section --> */}
-      <section className="py-24 bg-background-light dark:bg-slate-900/50" id="contact">
+      <section
+        className="py-24 bg-background-light dark:bg-slate-900/50"
+        id="contact"
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20">
             <div>
@@ -688,7 +698,7 @@ const MainComponent = () => {
                       LinkedIn
                     </p>
                     <p className="font-bold">
-                      <a href="https://in.linkedin.com/in/jeegar-ranpura">
+                      <a target="_blank" href="https://in.linkedin.com/in/jeegar-ranpura">
                         Jeegar Ranpura
                       </a>
                     </p>
@@ -723,7 +733,7 @@ const MainComponent = () => {
                     </label>
                     <input
                       className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                      placeholder="Jeegar Ranpura"
+                      placeholder="Full Name"
                       type="text"
                     />
                   </div>
@@ -733,7 +743,7 @@ const MainComponent = () => {
                     </label>
                     <input
                       className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                      placeholder="Jeegar@example.com"
+                      placeholder="your@example.com"
                       type="email"
                     />
                   </div>
@@ -767,6 +777,9 @@ const MainComponent = () => {
           </div>
         </div>
       </section>
+      {isProjectDetails && (
+        <ProjectDetails data={isProjectDetails} closePopup={closePopup} />
+      )}
     </main>
   );
 };

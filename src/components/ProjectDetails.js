@@ -19,9 +19,10 @@ const ProjectDetails = ({ data, closePopup }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0"></div>
           <Image
             alt="Modern E-Commerce Platform Dashboard"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-fit p-3"
             data-alt="Modern e-commerce dashboard interface on a screen"
             src={data.image}
+            priority
           />
           <div className="absolute bottom-6 left-8 z-10">
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
